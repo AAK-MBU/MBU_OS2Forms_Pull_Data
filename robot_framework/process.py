@@ -15,12 +15,9 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     orchestrator_connection.log_trace(sql_conn_string)
     api_key = orchestrator_connection.get_credential("os2_api").password
 
-    orchestrator_connection.log_trace("CALLING API...")
     response = forms.get_list_of_active_forms(oc_args_json['OS2FormsEndpoint'], oc_args_json['DataWebformId'], api_key)
-    orchestrator_connection.log_trace("AFTER API CALL...")
     forms_dict = response.json()['submissions']
     for key in forms_dict:
-        orchestrator_connection.log_trace("IN THE LOOP!!!")
         form_url = forms_dict[key]
 
         forms_response = forms.get_form(form_url, api_key)
