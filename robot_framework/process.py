@@ -10,20 +10,17 @@ from mbu_dev_shared_components.utils.db_stored_procedure_executor import execute
 def process(orchestrator_connection: OrchestratorConnection) -> None:
     """Do the primary process of the robot."""
     orchestrator_connection.log_trace("Running process.")
-    orchestrator_connection.log_trace("TEST!!.")
-    orchestrator_connection.log_trace(orchestrator_connection.process_arguments)
     oc_args_json = json.loads(orchestrator_connection.process_arguments)
-    orchestrator_connection.log_trace("TEST2!!.")
-    orchestrator_connection.log_trace(oc_args_json)
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
     orchestrator_connection.log_trace(sql_conn_string)
     api_key = orchestrator_connection.get_credential("os2_api").password
-
+    
+    orchestrator_connection.log_trace("CALLING API...")
     response = forms.get_list_of_active_forms(oc_args_json['OS2FormsEndpoint'], oc_args_json['DataWebformId'], api_key)
-    orchestrator_connection.log_trace(response)
+    orchestrator_connection.log_trace("AFTER API CALL...")
     forms_dict = response.json()['submissions']
     for key in forms_dict:
-        orchestrator_connection.log_trace("FOR EACH")
+        orchestrator_connection.log_trace("IN THE LOOP!!!")
         form_url = forms_dict[key]
 
         forms_response = forms.get_form(form_url, api_key)
@@ -36,7 +33,7 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
             "tableName": ("str", f'{oc_args_json["TableName"]}'),
             "reference": ("str", f'{reference}'),
             "creation_time": ("datetime", f'{completed}'),
-            "data": ("str", f'{data}')
+            "data": ("json", f'{data}')
         }
 
         execute_stored_procedure(sql_conn_string, oc_args_json['SPName'], sql_params)
