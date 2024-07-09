@@ -10,7 +10,8 @@ from mbu_dev_shared_components.utils.db_stored_procedure_executor import execute
 def process(orchestrator_connection: OrchestratorConnection) -> None:
     """Do the primary process of the robot."""
     orchestrator_connection.log_trace("Running process.")
-    oc_args_json = json.loads(orchestrator_connection.process_arguments)
+    orchestrator_connection.log_trace("TEST!!.")
+    oc_args_json = json.loads(fr'{orchestrator_connection.process_arguments}')
     orchestrator_connection.log_trace(oc_args_json)
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
     orchestrator_connection.log_trace(sql_conn_string)
