@@ -10,7 +10,7 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
     orchestrator_connection.log_trace(sql_conn_string)
     api_key = orchestrator_connection.get_credential("os2_api").password
-    orchestrator_connection.log_trace(len(api_key))
+    orchestrator_connection.log_trace(api_key)
 
 
 if __name__ == "__main__":
