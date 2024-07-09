@@ -26,7 +26,7 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
             "tableName": ("str", f'{oc_args_json["TableName"]}'),
             "reference": ("str", f'{reference}'),
             "creation_time": ("datetime", f'{completed}'),
-            "data": ("json", f'{data}')
+            "data": ("str", f'{data}')
         }
         execute_stored_procedure(sql_conn_string, oc_args_json['SPName'], sql_params)
 
