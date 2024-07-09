@@ -14,7 +14,7 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
     orchestrator_connection.log_trace(sql_conn_string)
     api_key = orchestrator_connection.get_credential("os2_api").password
-    
+
     orchestrator_connection.log_trace("CALLING API...")
     response = forms.get_list_of_active_forms(oc_args_json['OS2FormsEndpoint'], oc_args_json['DataWebformId'], api_key)
     orchestrator_connection.log_trace("AFTER API CALL...")
