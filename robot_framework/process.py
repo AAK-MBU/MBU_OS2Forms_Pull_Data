@@ -11,13 +11,17 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     """Do the primary process of the robot."""
     orchestrator_connection.log_trace("Running process.")
     oc_args_json = json.loads(orchestrator_connection.process_arguments)
+    orchestrator_connection.log_trace(oc_args_json)
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
+    orchestrator_connection.log_trace(sql_conn_string)
     api_key = orchestrator_connection.get_credential("os2_api").password
+    orchestrator_connection.log_trace(len(api_key))
 
     response = forms.get_list_of_active_forms(oc_args_json['OS2FormsEndpoint'], oc_args_json['DataWebformId'], api_key)
     orchestrator_connection.log_trace(response)
     forms_dict = response.json()['submissions']
     for key in forms_dict:
+        orchestrator_connection.log_trace("FOR EACH")
         form_url = forms_dict[key]
 
         forms_response = forms.get_form(form_url, api_key)
