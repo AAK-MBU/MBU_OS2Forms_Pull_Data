@@ -11,6 +11,7 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     """Do the primary process of the robot."""
     orchestrator_connection.log_trace("Running process.")
     orchestrator_connection.log_trace("TEST!!.")
+    orchestrator_connection.log_trace(orchestrator_connection.process_arguments)
     oc_args_json = json.loads(orchestrator_connection.process_arguments)
     orchestrator_connection.log_trace(oc_args_json)
     sql_conn_string = orchestrator_connection.get_constant('DbConnectionString').value
