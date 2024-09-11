@@ -1,5 +1,6 @@
 """This module contains the main process of the robot."""
 import json
+from datetime import datetime
 
 from OpenOrchestrator.orchestrator_connection.connection import OrchestratorConnection
 
@@ -18,16 +19,23 @@ def process(orchestrator_connection: OrchestratorConnection) -> None:
     forms_dict = response.json()['submissions']
     for key in forms_dict:
         form_url = forms_dict[key]
+
         forms_response = forms.get_form(form_url, api_key)
+
         reference = forms_response.json()['entity']['uuid'][0]['value']
+
         completed = forms_response.json()['entity']['completed'][0]['value']
+        completed_date_obj = datetime.fromisoformat(completed)
+        completed_date_obj_without_tz = completed_date_obj.replace(tzinfo=None)
+
         data = json.dumps(forms_response.json(), ensure_ascii=False)
         sql_params = {
             "tableName": ("str", f'{oc_args_json["TableName"]}'),
             "reference": ("str", f'{reference}'),
-            "creation_time": ("datetime", f'{completed}'),
+            "creation_time": ("datetime", f'{completed_date_obj_without_tz}'),
             "data": ("str", f'{data}')
         }
+
         execute_stored_procedure(sql_conn_string, oc_args_json['SPName'], sql_params)
 
 
